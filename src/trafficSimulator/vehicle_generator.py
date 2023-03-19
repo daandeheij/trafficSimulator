@@ -5,6 +5,7 @@ from numpy.random import randint
 
 class VehicleGenerator:
     def __init__(self, sim, config={}, max_generated=math.inf):
+        self.generated_vehicles = 0
         self.sim = sim
 
         # Set default configurations
@@ -18,7 +19,7 @@ class VehicleGenerator:
         self.init_properties()
 
         self.max_generated = max_generated
-        self.generated_vehicles = 0
+
 
     def set_default_config(self):
         """Set default configuration"""
@@ -38,7 +39,8 @@ class VehicleGenerator:
         for (weight, config) in self.vehicles:
             r -= weight
             if r <= 0:
-                return Vehicle(config)
+                first_generated = True if self.generated_vehicles == 0 else False
+                return Vehicle(config, first_generated=first_generated)
 
     def update(self):
         """Add vehicles"""

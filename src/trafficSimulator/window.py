@@ -44,9 +44,10 @@ class Window:
 
         # Draw loop
         running = True
+        paused = False
         while running:
             # Update simulation
-            if loop: loop(self.sim)
+            if loop and not paused: loop(self.sim)
 
             # if len(self.sim.roads[0].vehicles) > 0:
             #     road = self.sim.roads[0]
@@ -63,6 +64,13 @@ class Window:
             # Update window
             pygame.display.update()
             clock.tick(self.fps)
+        # while not running:
+        #     for event in pygame.event.get():
+        #         if event.type == pygame.QUIT:
+        #             pygame.quit()
+        #         if event.type == pygame.KEYDOWN:
+        #             if event.key == pygame.K_ESCAPE:
+        #                 running = True
 
 
 
@@ -93,7 +101,14 @@ class Window:
                         x2, y2 = pygame.mouse.get_pos()
                         self.offset = ((x2-x1)/self.zoom, (y2-y1)/self.zoom)
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    self.mouse_down = False           
+                    self.mouse_down = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        paused = not paused
+                    if event.key == pygame.KEYUP:
+                        for vehicle in self.sim.roads[0].vehicles:
+                            if vehicle.first_generated:
+                                vehicle.v_max -= vehicle.v_max * 0.1
 
     def run(self, steps_per_update=1):
         """Runs the simulation by updating in every loop."""
@@ -292,8 +307,8 @@ class Window:
 
         color = (0, 0, 255)
 
-        if self.sim.roads[0].vehicles[0] is vehicle:
-            color = (255, 0, 0)
+        if vehicle.first_generated:
+            color = (0, 0, 0)
 
         self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True, color=color)
 

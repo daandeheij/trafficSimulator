@@ -30,7 +30,7 @@ class Simulation:
             self.create_road(*road)
 
     def create_gen(self, config={}):
-        gen = VehicleGenerator(self, config, max_generated=3)
+        gen = VehicleGenerator(self, config, max_generated=6)
         self.generators.append(gen)
         return gen
 

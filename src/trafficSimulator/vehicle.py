@@ -1,7 +1,7 @@
 import numpy as np
 
 class Vehicle:
-    def __init__(self, config={}):
+    def __init__(self, config={}, first_generated=False):
         # Set default configuration
         self.set_default_config()
 
@@ -11,6 +11,8 @@ class Vehicle:
 
         # Calculate properties
         self.init_properties()
+
+        self.first_generated = first_generated
 
     def set_default_config(self):    
         self.l = 4
