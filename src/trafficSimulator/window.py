@@ -305,10 +305,7 @@ class Window:
         x = road.start[0] + cos * vehicle.x 
         y = road.start[1] + sin * vehicle.x 
 
-        color = (0, 0, 255)
-
-        if vehicle.first_generated:
-            color = (0, 0, 0)
+        color = self.get_car_color(vehicle)
 
         self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True, color=color)
 
@@ -335,11 +332,16 @@ class Window:
                         color=color)
 
     def draw_status(self):
+        vehicles = self.sim.roads[0].vehicles
         text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
         text_frc = self.text_font.render(f'n={self.sim.frame_count}', False, (0, 0, 0))
-        
+        if len(vehicles) > 0:
+            text_per = self.text_font.render(f'prc={self.sim.roads[0].vehicles[0].get_percentage_flow()}', False, (0, 0, 0))
+            self.screen.blit(text_per, (200, 0))
+
         self.screen.blit(text_fps, (0, 0))
         self.screen.blit(text_frc, (100, 0))
+
 
 
     def draw(self):
@@ -357,4 +359,13 @@ class Window:
 
         # Draw status info
         self.draw_status()
+
+    def get_car_color(self, vehicle):
+        if vehicle.first_generated:
+            return (0, 0, 0)
+        percentage_flow = vehicle.get_percentage_flow()
+        green = int(180 * percentage_flow)
+        red = int(255 * (1-percentage_flow))
+        return (red, green, 0)
+
         

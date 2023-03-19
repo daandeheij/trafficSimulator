@@ -69,5 +69,8 @@ class Vehicle:
 
     def unslow(self):
         self.v_max = self._v_max
+
+    def get_percentage_flow(self):
+        return self.v / self.v_max
         
 

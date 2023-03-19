@@ -48,12 +48,12 @@ class Simulation:
             for vehicle in self.roads[0].vehicles:
                 if vehicle.first_generated:
                     vehicle.slow(2)
-        self.keydown = False
+            self.keydown = False
         if self.keyup:
             for vehicle in self.roads[0].vehicles:
                 if vehicle.first_generated:
                     vehicle.unslow()
-        self.keyup = False
+            self.keyup = False
 
         # Update every road
         for road in self.roads:
