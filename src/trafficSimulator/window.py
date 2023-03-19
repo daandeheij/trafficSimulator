@@ -48,12 +48,23 @@ class Window:
             # Update simulation
             if loop: loop(self.sim)
 
+            if len(self.sim.roads[0].vehicles) > 0:
+                road = self.sim.roads[0]
+                sin, cos = road.angle_sin, road.angle_cos
+                ego_vehicle = road.vehicles[0]
+                x = road.start[0] + cos * ego_vehicle.x
+                y = sin * ego_vehicle.x
+                ego_offset = (self.offset[0], -road.start[0] - y)
+                self.offset = ego_offset
+
             # Draw simulation
             self.draw()
 
             # Update window
             pygame.display.update()
             clock.tick(self.fps)
+
+
 
             # Handle all events
             for event in pygame.event.get():
