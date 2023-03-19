@@ -48,14 +48,14 @@ class Window:
             # Update simulation
             if loop: loop(self.sim)
 
-            if len(self.sim.roads[0].vehicles) > 0:
-                road = self.sim.roads[0]
-                sin, cos = road.angle_sin, road.angle_cos
-                ego_vehicle = road.vehicles[0]
-                x = road.start[0] + cos * ego_vehicle.x
-                y = sin * ego_vehicle.x
-                ego_offset = (self.offset[0], -road.start[0] - y)
-                self.offset = ego_offset
+            # if len(self.sim.roads[0].vehicles) > 0:
+            #     road = self.sim.roads[0]
+            #     sin, cos = road.angle_sin, road.angle_cos
+            #     ego_vehicle = road.vehicles[0]
+            #     x = road.start[0] + cos * ego_vehicle.x
+            #     y = sin * ego_vehicle.x
+            #     ego_offset = (self.offset[0], -road.start[0] - y)
+            #     self.offset = ego_offset
 
             # Draw simulation
             self.draw()
@@ -290,7 +290,12 @@ class Window:
         x = road.start[0] + cos * vehicle.x 
         y = road.start[1] + sin * vehicle.x 
 
-        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True)
+        color = (0, 0, 255)
+
+        if self.sim.roads[0].vehicles[0] is vehicle:
+            color = (255, 0, 0)
+
+        self.rotated_box((x, y), (l, h), cos=cos, sin=sin, centered=True, color=color)
 
     def draw_vehicles(self):
         for road in self.sim.roads:

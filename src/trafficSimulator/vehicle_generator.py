@@ -1,8 +1,10 @@
+import math
+
 from .vehicle import Vehicle
 from numpy.random import randint
 
 class VehicleGenerator:
-    def __init__(self, sim, config={}):
+    def __init__(self, sim, config={}, max_generated=math.inf):
         self.sim = sim
 
         # Set default configurations
@@ -14,6 +16,9 @@ class VehicleGenerator:
 
         # Calculate properties
         self.init_properties()
+
+        self.max_generated = max_generated
+        self.generated_vehicles = 0
 
     def set_default_config(self):
         """Set default configuration"""
@@ -37,6 +42,8 @@ class VehicleGenerator:
 
     def update(self):
         """Add vehicles"""
+        if self.generated_vehicles >= self.max_generated:
+            return
         if self.sim.t - self.last_added_time >= 60 / self.vehicle_rate:
             # If time elasped after last added vehicle is
             # greater than vehicle_period; generate a vehicle
@@ -48,5 +55,6 @@ class VehicleGenerator:
                 road.vehicles.append(self.upcoming_vehicle)
                 # Reset last_added_time and upcoming_vehicle
                 self.last_added_time = self.sim.t
+                self.generated_vehicles += 1
             self.upcoming_vehicle = self.generate_vehicle()
 

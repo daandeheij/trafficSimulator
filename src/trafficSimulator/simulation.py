@@ -30,7 +30,7 @@ class Simulation:
             self.create_road(*road)
 
     def create_gen(self, config={}):
-        gen = VehicleGenerator(self, config)
+        gen = VehicleGenerator(self, config, max_generated=3)
         self.generators.append(gen)
         return gen
 
@@ -60,18 +60,20 @@ class Simulation:
             vehicle = road.vehicles[0]
             # If first vehicle is out of road bounds
             if vehicle.x >= road.length:
-                # If vehicle has a next road
-                if vehicle.current_road_index + 1 < len(vehicle.path):
-                    # Update current road to next road
-                    vehicle.current_road_index += 1
-                    # Create a copy and reset some vehicle properties
-                    new_vehicle = deepcopy(vehicle)
-                    new_vehicle.x = 0
-                    # Add it to the next road
-                    next_road_index = vehicle.path[vehicle.current_road_index]
-                    self.roads[next_road_index].vehicles.append(new_vehicle)
-                # In all cases, remove it from its road
-                road.vehicles.popleft() 
+                vehicle.x = 0
+                road.vehicles.append(road.vehicles.popleft())
+                # # If vehicle has a next road
+                # if vehicle.current_road_index + 1 < len(vehicle.path):
+                #     # Update current road to next road
+                #     vehicle.current_road_index += 1
+                #     # Create a copy and reset some vehicle properties
+                #     new_vehicle = deepcopy(vehicle)
+                #     new_vehicle.x = 0
+                #     # Add it to the next road
+                #     next_road_index = vehicle.path[vehicle.current_road_index]
+                #     self.roads[next_road_index].vehicles.append(new_vehicle)
+                # # In all cases, remove it from its road
+                # road.vehicles.popleft()
         # Increment time
         self.t += self.dt
         self.frame_count += 1
