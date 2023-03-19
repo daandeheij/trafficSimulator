@@ -2,6 +2,7 @@ import numpy as np
 
 class Vehicle:
     def __init__(self, config={}, first_generated=False):
+        self.first_generated = first_generated
         # Set default configuration
         self.set_default_config()
 
@@ -12,7 +13,7 @@ class Vehicle:
         # Calculate properties
         self.init_properties()
 
-        self.first_generated = first_generated
+
 
     def set_default_config(self):    
         self.l = 4
@@ -27,6 +28,7 @@ class Vehicle:
 
         self.x = 0
         self.v = self.v_max
+
         self.a = 0
         self.stopped = False
 

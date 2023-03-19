@@ -105,10 +105,10 @@ class Window:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         paused = not paused
-                    if event.key == pygame.KEYUP:
-                        for vehicle in self.sim.roads[0].vehicles:
-                            if vehicle.first_generated:
-                                vehicle.v_max -= vehicle.v_max * 0.1
+                    if event.key == pygame.K_DOWN:
+                        self.sim.keydown = True
+                    if event.key == pygame.K_UP:
+                        self.sim.keyup = True
 
     def run(self, steps_per_update=1):
         """Runs the simulation by updating in every loop."""

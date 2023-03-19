@@ -8,6 +8,9 @@ class Simulation:
         # Set default configuration
         self.set_default_config()
 
+        self.keydown = False
+        self.keyup = False
+
         # Update configuration
         for attr, val in config.items():
             setattr(self, attr, val)
@@ -41,6 +44,17 @@ class Simulation:
         return sig
 
     def update(self):
+        if self.keydown:
+            for vehicle in self.roads[0].vehicles:
+                if vehicle.first_generated:
+                    vehicle.slow(2)
+        self.keydown = False
+        if self.keyup:
+            for vehicle in self.roads[0].vehicles:
+                if vehicle.first_generated:
+                    vehicle.unslow()
+        self.keyup = False
+
         # Update every road
         for road in self.roads:
             road.update(self.dt)
