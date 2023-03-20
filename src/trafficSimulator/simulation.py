@@ -96,3 +96,11 @@ class Simulation:
     def run(self, steps):
         for _ in range(steps):
             self.update()
+
+    def get_vehicle_emissions(self):
+        if len(self.roads) <= 0:
+            return 0
+        emissions = 0
+        for vehicle in self.roads[0].vehicles:
+            emissions += vehicle.extra_emissions
+        return emissions

@@ -109,6 +109,8 @@ class Window:
                         self.sim.keydown = True
                     if event.key == pygame.K_UP:
                         self.sim.keyup = True
+                    if event.key == pygame.K_q:
+                        running = not running
 
     def run(self, steps_per_update=1):
         """Runs the simulation by updating in every loop."""
@@ -336,11 +338,11 @@ class Window:
         text_fps = self.text_font.render(f't={self.sim.t:.5}', False, (0, 0, 0))
         text_frc = self.text_font.render(f'n={self.sim.frame_count}', False, (0, 0, 0))
         if len(vehicles) > 0:
-            text_per = self.text_font.render(f'prc={self.sim.roads[0].vehicles[0].get_percentage_flow()}', False, (0, 0, 0))
+            text_per = self.text_font.render(f'{self.sim.roads[0].vehicles[0].extra_emissions}', False, (0, 0, 0))
             self.screen.blit(text_per, (200, 0))
 
-        self.screen.blit(text_fps, (0, 0))
-        self.screen.blit(text_frc, (100, 0))
+        self.screen.blit(text_fps, (0, 100))
+        self.screen.blit(text_frc, (100, 100))
 
 
 
@@ -359,6 +361,7 @@ class Window:
 
         # Draw status info
         self.draw_status()
+        self.print_emissions()
 
     def get_car_color(self, vehicle):
         if vehicle.first_generated:
@@ -367,5 +370,11 @@ class Window:
         green = int(180 * percentage_flow)
         red = int(255 * (1-percentage_flow))
         return (red, green, 0)
+
+    def print_emissions(self):
+        emissions = self.sim.get_vehicle_emissions()
+        # render emissions with 3 decimals precision
+        text_emissions = self.text_font.render(f'CO2: {emissions:.3f} g', False, (0, 0, 0))
+        self.screen.blit(text_emissions, (300, 100))
 
         

@@ -3,6 +3,7 @@ import numpy as np
 class Vehicle:
     def __init__(self, config={}, first_generated=False):
         self.first_generated = first_generated
+        self.extra_emissions = 0
         # Set default configuration
         self.set_default_config()
 
@@ -57,6 +58,9 @@ class Vehicle:
 
         if self.stopped: 
             self.a = -self.b_max*self.v/self.v_max
+
+        #update emissions
+        self.update_emissions(self.a, dt)
         
     def stop(self):
         self.stopped = True
@@ -72,5 +76,13 @@ class Vehicle:
 
     def get_percentage_flow(self):
         return self.v / self.v_max
+
+    def update_emissions(self, a, dt):
+        if a <= 0: return
+        EXTRA_EMISSION_ACCELERATION = 0.008
+        extra_emission = a * dt * EXTRA_EMISSION_ACCELERATION
+        if extra_emission <= 0: raise ValueError("Extra emission is negative")
+        self.extra_emissions += extra_emission
+
         
 
