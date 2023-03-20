@@ -32,7 +32,7 @@ class Window:
         """Shows a window visualizing the simulation and runs the loop function."""
         
         # Create a pygame window
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.screen = pygame.display.set_mode((self.width, self.height), pygame.RESIZABLE)
         pygame.display.flip()
 
         # Fixed fps
@@ -64,13 +64,6 @@ class Window:
             # Update window
             pygame.display.update()
             clock.tick(self.fps)
-        # while not running:
-        #     for event in pygame.event.get():
-        #         if event.type == pygame.QUIT:
-        #             pygame.quit()
-        #         if event.type == pygame.KEYDOWN:
-        #             if event.key == pygame.K_ESCAPE:
-        #                 running = True
 
 
 
@@ -362,6 +355,8 @@ class Window:
         # Draw status info
         self.draw_status()
         self.print_emissions()
+        if self.sim.frame_count % 100 == 0:
+            print(self.sim.roads[0].vehicles[0].a)
 
     def get_car_color(self, vehicle):
         if vehicle.first_generated:
@@ -374,7 +369,7 @@ class Window:
     def print_emissions(self):
         emissions = self.sim.get_vehicle_emissions()
         # render emissions with 3 decimals precision
-        text_emissions = self.text_font.render(f'CO2: {emissions:.3f} g', False, (0, 0, 0))
-        self.screen.blit(text_emissions, (300, 100))
+        text_emissions = self.text_font.render(f'{emissions:.3f}g additional CO2 emitted due to congestion', False, (0, 0, 0))
+        self.screen.blit(text_emissions, (200, 100))
 
         

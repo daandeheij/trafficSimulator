@@ -78,7 +78,7 @@ class Vehicle:
         return self.v / self.v_max
 
     def update_emissions(self, a, dt):
-        if a <= 0: return
+        if a <= 0.15: return
         EXTRA_EMISSION_ACCELERATION = 0.008
         extra_emission = a * dt * EXTRA_EMISSION_ACCELERATION
         if extra_emission <= 0: raise ValueError("Extra emission is negative")
